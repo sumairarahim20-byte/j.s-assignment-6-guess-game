@@ -1,0 +1,285 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="description"
+    content="Play Guess the Number, a fun retro arcade game with Easy, Medium and Hard levels."
+  />
+
+  <title>Guess the Number</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <div class="background-grid"></div>
+  <div class="pixel-star star-one">✦</div>
+  <div class="pixel-star star-two">✧</div>
+  <div class="pixel-star star-three">✦</div>
+
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Pixel Arcade home">
+      <span class="brand-icon">▣</span>
+      <span>PIXEL ARCADE</span>
+    </a>
+
+    <div class="top-stats">
+      <div class="top-stat">
+        <span class="stat-symbol">★</span>
+        <span id="high-score">0</span>
+        <span class="stat-label">BEST</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-container">
+    <!-- WELCOME SCREEN -->
+    <section id="welcome-screen" class="screen active">
+      <div class="hero-content">
+        <div class="arcade-badge">
+          <span class="pulse-dot"></span>
+          READY PLAYER ONE?
+        </div>
+
+        <div class="hero-icon" aria-hidden="true">👾</div>
+
+        <h1 class="game-title">
+          GUESS
+          <span class="title-accent">THE NUMBER</span>
+        </h1>
+
+        <p class="hero-description">
+          A secret number is waiting.
+          Can you crack the code?
+        </p>
+
+        <div class="hero-decoration">
+          <span>★</span>
+          <span>✦</span>
+          <span>★</span>
+        </div>
+
+        <button id="start-button" class="btn btn-primary btn-large">
+          <span>▶</span> START GAME
+        </button>
+
+        <p class="keyboard-hint">
+          THINK SMART. GUESS RIGHT. WIN BIG.
+        </p>
+      </div>
+
+      <div class="feature-strip">
+        <div class="feature-item">
+          <span class="feature-icon">🎯</span>
+          <span>3 LEVELS</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">⚡</span>
+          <span>BEAT THE CLOCK? NO!</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🏆</span>
+          <span>CHASE THE HIGH SCORE</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEVEL SELECTION SCREEN -->
+    <section id="level-screen" class="screen" hidden>
+      <div class="section-heading">
+        <span class="eyebrow">LEVEL SELECT</span>
+        <h2>CHOOSE YOUR<br /><span class="title-accent">CHALLENGE!</span></h2>
+        <p>Pick your difficulty and enter the arcade.</p>
+      </div>
+
+      <div class="level-grid">
+        <button class="level-card easy-card" data-level="easy">
+          <span class="level-emoji">🌱</span>
+          <span class="level-name">EASY</span>
+          <span class="level-range">NUMBERS 1 – 20</span>
+          <span class="level-detail">10 ATTEMPTS</span>
+          <span class="level-play">SELECT LEVEL →</span>
+        </button>
+
+        <button class="level-card medium-card" data-level="medium">
+          <span class="level-emoji">⚡</span>
+          <span class="level-name">MEDIUM</span>
+          <span class="level-range">NUMBERS 1 – 100</span>
+          <span class="level-detail">7 ATTEMPTS</span>
+          <span class="level-play">SELECT LEVEL →</span>
+        </button>
+
+        <button class="level-card hard-card" data-level="hard">
+          <span class="level-emoji">🔥</span>
+          <span class="level-name">HARD</span>
+          <span class="level-range">NUMBERS 1 – 500</span>
+          <span class="level-detail">8 ATTEMPTS</span>
+          <span class="level-play">SELECT LEVEL →</span>
+        </button>
+      </div>
+
+      <button class="btn btn-secondary back-button" data-back="welcome">
+        ← BACK TO HOME
+      </button>
+    </section>
+
+    <!-- GAME SCREEN -->
+    <section id="game-screen" class="screen" hidden>
+      <div class="game-topline">
+        <button class="text-button" id="change-level-button">
+          ← CHANGE LEVEL
+        </button>
+
+        <span id="current-level-badge" class="current-level-badge">
+          EASY MODE
+        </span>
+      </div>
+
+      <div class="game-card">
+        <div class="game-card-heading">
+          <span class="eyebrow">SECRET NUMBER DETECTIVE</span>
+          <h2>CAN YOU <span class="title-accent">GUESS IT?</span></h2>
+          <p id="range-instruction">Guess a number between 1 and 20.</p>
+        </div>
+
+        <div class="secret-number-box">
+          <span class="secret-label">YOUR MYSTERY NUMBER</span>
+          <div class="question-mark" aria-hidden="true">?</div>
+          <span class="secret-caption">HIDDEN FROM YOU!</span>
+        </div>
+
+        <form id="guess-form" class="guess-form">
+          <label for="guess-input">ENTER YOUR GUESS</label>
+
+          <div class="guess-input-row">
+            <input
+              type="number"
+              id="guess-input"
+              min="1"
+              max="20"
+              placeholder="?"
+              autocomplete="off"
+              required
+            />
+
+            <button type="submit" class="btn btn-primary guess-button">
+              GUESS!
+            </button>
+          </div>
+
+          <p id="input-error" class="input-error" aria-live="polite"></p>
+        </form>
+
+        <div id="feedback-box" class="feedback-box" aria-live="polite">
+          <span class="feedback-icon">💡</span>
+          <p id="feedback-message">Your first guess starts here. Good luck!</p>
+        </div>
+
+        <div class="game-stats">
+          <div class="game-stat">
+            <span class="game-stat-icon">🎯</span>
+            <span class="game-stat-label">ATTEMPTS LEFT</span>
+            <strong id="attempts-left">10</strong>
+          </div>
+
+          <div class="game-stat">
+            <span class="game-stat-icon">⭐</span>
+            <span class="game-stat-label">YOUR SCORE</span>
+            <strong id="current-score">0</strong>
+          </div>
+        </div>
+
+        <div class="attempt-progress">
+          <div class="progress-labels">
+            <span>GAME PROGRESS</span>
+            <span id="progress-text">0 / 10</span>
+          </div>
+
+          <div
+            class="progress-track"
+            role="progressbar"
+            aria-label="Guess attempts used"
+            aria-valuemin="0"
+            aria-valuemax="10"
+            aria-valuenow="0"
+            id="progress-track"
+          >
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULT SCREEN -->
+    <section id="result-screen" class="screen" hidden>
+      <div class="result-card" id="result-card">
+        <div id="result-icon" class="result-icon" aria-hidden="true">🏆</div>
+
+        <span id="result-eyebrow" class="eyebrow">LEVEL COMPLETE</span>
+
+        <h2 id="result-title" class="result-title">YOU DID IT!</h2>
+
+        <p id="result-message" class="result-message">
+          Amazing work, player!
+        </p>
+
+        <div class="revealed-number">
+          <span>THE SECRET NUMBER WAS</span>
+          <strong id="revealed-number">7</strong>
+        </div>
+
+        <div class="result-stats">
+          <div class="result-stat">
+            <span>FINAL SCORE</span>
+            <strong id="final-score">0</strong>
+          </div>
+
+          <div class="result-stat">
+            <span>GUESSES USED</span>
+            <strong id="guesses-used">0</strong>
+          </div>
+
+          <div class="result-stat">
+            <span>BEST SCORE</span>
+            <strong id="result-high-score">0</strong>
+          </div>
+        </div>
+
+        <p id="new-record-message" class="new-record" hidden>
+          ✨ NEW HIGH SCORE! ✨
+        </p>
+
+        <div class="result-actions">
+          <button id="play-again-button" class="btn btn-primary btn-large">
+            ↻ PLAY AGAIN
+          </button>
+
+          <button id="result-level-button" class="btn btn-secondary">
+            CHANGE LEVEL
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>INSERT IMAGINATION. PRESS PLAY. <span>♥</span></p>
+    <p class="footer-small">PIXEL ARCADE · MADE WITH JAVASCRIPT</p>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
